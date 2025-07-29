@@ -7,12 +7,12 @@ if ($core->isController("ajax")) {
 }
 
 if ($core->isPost()) {
-  $core->controller(getController());
+  $core->controller($core->getController());
 }
 
-echo $core->page(_Resources_Views . "/Layouts/Main.phtml", [
-  "header" => $core->page(_Resources_Views . "/Layouts/Header.phtml"),
+echo $core->view(_Resources_Views . "/Layouts/Main.phtml", [
+  "header" => $core->view(_Resources_Views . "/Layouts/Header.phtml"),
   "menu" => $core->menu->load(),
   "content" => $core->controller($core->getController()),
-  "footer" => $core->page(_Resources_Views . "/Layouts/Footer.phtml")
+  "footer" => $core->view(_Resources_Views . "/Layouts/Footer.phtml")
 ]);
