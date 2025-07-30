@@ -1,5 +1,9 @@
-# Главная
-node_modules/
-vendor/
-package-lock.json
-composer.lock
+# Main
+/node_modules/
+/vendor/
+/package-lock.json
+/composer.lock 
+
+# Classes
+/App/Core/Classes/permission.php
+/App/Core/Classes/error.php
