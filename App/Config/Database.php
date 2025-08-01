@@ -4,9 +4,9 @@ if (!defined("devsakura")) {
 }
 $db = array(
   "host" => "127.0.0.1",
-  "user" => "user",
-  "pass" => "pass",
-  "base" => "user",
+  "user" => "root",
+  "pass" => "",
+  "base" => "devsakura",
   "port" => 3306
 );
 

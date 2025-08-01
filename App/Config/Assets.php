@@ -4,8 +4,8 @@ if (!defined("devsakura")) {
   exit("Попытка взлома!");
 }
 
-$publicCss = _Public_Assets_Css;
-$publicJs = Public_Assets_ Js;
+$publicCss = "/Public/Assets/Css";
+$publicJs = "/Public/Assets/Js";
 
 $css = [
   "{$publicCss}/bootstrap.css",
