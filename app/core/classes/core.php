@@ -16,7 +16,7 @@ class Core {
     require_once(_App_Core_Classes . "/config.php");
     $this->config = new Config($this);
 
-    require_once(_App_Core_Classes . "/dusebase.php");
+    require_once(_App_Core_Classes . "/database.php");
     $this->db = new db(
       $this->config->db['host'],
       $this->config->db['user'],
