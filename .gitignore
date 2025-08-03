@@ -1,10 +1,31 @@
-# Main
-/node_modules/
-/vendor/
-/package-lock.json
+# --- Main
+/node_modules
+/vendor
+/src
+/old
+
+/package.json
+/package-lock.json 
+/composer.json
 /composer.lock 
+/webpack.config.js 
+/.htaccess
 
-# Classes
-/App/Core/Classes/permission.php
-/App/Core/Classes/error.php
 
+# --- Classes
+/app/core/classes/dep_permission.php
+/app/core/classes/dep_error.php
+/app/core/classes/test.php
+
+# --- Modules 
+/app/modules/*
+!/app/modules/index
+
+
+# -- Public
+/public/assets/js 
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+# -- Resourses
+/Resources/*
