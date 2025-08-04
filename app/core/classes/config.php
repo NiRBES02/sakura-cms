@@ -4,17 +4,17 @@ if (!defined("devsakura")) {
 }
 
 class Config {
-  public $main = array();
-  public $assets = array();
-  public $db = array();
+  public $main = [];
+  public $assets = [];
+  public $db = [];
 
   public function __construct() {
-    require_once(_App_Config . "/Main.php");
+    require_once(_App_Configs."/main.php");
     $this->main = $main;
     
-    $this->assets = require_once(_App_Config . "/Assets.php");
+    $this->assets = require_once(_App_Configs."/assets.php");
     
-    require_once(_App_Config . "/Database.php");
+    require_once(_App_Configs."/database.php");
     $this->db = $db;
     
   }
