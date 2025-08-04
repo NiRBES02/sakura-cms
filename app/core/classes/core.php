@@ -13,23 +13,23 @@ class Core {
   public $lang = array();
 
   public function __construct() {
-    require_once(_App_Core_Classes . "/config.php");
+    require_once(_App_Core_Classes."/config.php");
     $this->config = new Config($this);
 
-    require_once(_App_Core_Classes . "/database.php");
+    require_once(_App_Core_Classes."/database.php");
     $this->db = new db(
-      $this->config->db['host'],
-      $this->config->db['user'],
-      $this->config->db['pass'],
-      $this->config->db['base'],
-      $this->config->db['port'],
+      $this->config->db["host"],
+      $this->config->db["user"],
+      $this->config->db["pass"],
+      $this->config->db["base"],
+      $this->config->db["port"],
       $this
     );
 
-    require_once(_App_Core_Classes . "/user.php");
+    require_once(_App_Core_Classes."/user.php");
     $this->user = new User($this);
 
-    require_once(_App_Core_Classes . "/menu.php");
+    require_once(_App_Core_Classes."/menu.php");
     $this->menu = new Menu($this);
 
     $this->lang = $this->language("core");
@@ -41,25 +41,14 @@ class Core {
   public function isGet() {
     return ($_SERVER["REQUEST_METHOD"] === "GET") ? true : false;
   }
-
-  public function loadPageJs($path = "", $data = array()) {
-    $arg = array(
-      "_page" => $this->loadPage($path, $data)
-    );
-    echo json_encode($arg);
-    exit;
-  }
-
-
-  public function view($path = "", $data = array()) {
+  
+  public function view(string $path, array $data) {
     ob_start();
     extract($data);
     require_once($path);
     $pageContent = ob_get_clean();
-
     if ($this->isPost()) {
       header('Content-Type: application/json');
-      // В $pageContent будет HTML модуля, который вызвал эту функцию
       echo json_encode(["content" => ["_page" => $pageContent]]);
       exit;
     } else {
@@ -84,9 +73,8 @@ class Core {
 
   public function controller(string $module) {
     $path = _App_Modules."/{$module}/Controllers/Index.php";
-
     if (!file_exists($path)) {
-      require_once(_App_Modules."/404/Controllers/Index.php");
+      require_once(_App_Modules."/404/controllers/index.php");
     } else {
       require_once($path);
     }
@@ -97,14 +85,11 @@ class Core {
   public function notify($message = '', $string = 'default', $opt = array()) {
     $arg = $this->parseArgsFromString($string);
     $send = $arg["flags"]["send"] ?? false;
-
-
     $_SESSION['notify'] = [
       "message" => $message,
       "type" => $arg["unknown"][0],
       "opt" => $opt
     ];
-
     if ($this->isPost()) {
       header('Content-Type: application/json');
       echo json_encode(["notify" => $_SESSION["notify"]]);
@@ -112,7 +97,6 @@ class Core {
       exit;
     }
   }
-
 
   public function language($language) {
     $path = _Resources_Language."/{$language}.php";
@@ -138,7 +122,6 @@ class Core {
       $str);
     return $replace;
   }
-
 
   public function parseArgsFromString(string $input): array {
     $parsed = array(
