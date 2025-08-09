@@ -58,7 +58,7 @@ class db
       error_log("PDO Connection Error: " . $e->getMessage());
       if (isset($this->core) && method_exists($this->core, 'notify')) {
         // Замените $this->core->lang["error"]["sql_error_connection"] на фактический текст, если lang не определен
-        return $this->core->notify($this->core->lang["error"]["sql_error_connection"] ?? "Ошибка подключения к базе данных.");
+        return $this->core->notify($this->core->lang["error"]["sql_error_connection"] ?? "Ошибка подключения к базе данных.", 'danger');
       } else {
         die("Ошибка подключения к базе данных: " . $e->getMessage());
       }

@@ -16,7 +16,7 @@ class Core {
     require_once(_App_Core_Classes.'/config.php');
     $this->config = new Config($this);
 
-    require_once(_App_Core_Classphp'/database.php');
+    require_once(_App_Core_Classes.'/database.php');
     $this->db = new db(
       $this->config->db['host'],
       $this->config->db['user'],
@@ -66,7 +66,7 @@ class Core {
   * @param array  $data Ассоциативный массив данных, которые будут извлечены в переменные внутри шаблона.
   * @return string|void Возвращает HTML-строку для GET-запросов или ничего (void) для POST-запросов (т.к. выводит результат напрямую).
   */
-  public function view(string $path, array $data): string|void {
+  public function view(string $path, array $data = []):string {
     ob_start();
     extract($data);
     require_once($path);
@@ -112,7 +112,7 @@ class Core {
   * @return string Возвращает загруженный контроллер.
   */
   public function controller(string $name): string {
-    $path = _App_Modules."/$name/Controllers/Index.php";
+    $path = _App_Modules."/$name/controllers/index.php";
     if (!file_exists($path)) {
       require_once(_App_Modules.'/404/controllers/index.php');
     } else {
@@ -131,7 +131,7 @@ class Core {
   * @param array $opt Массив опций и данных для настроект поведения уведомлений.
   * @return void Отправляет JSON ответ.
   */
-  public function notify(?stirng $message, string $string = 'default', array $opt = []): void {
+  public function notify(string $message, string $string = 'default', array $opt = []): void {
     $arg = $this->parseArgsFromString($string);
     $_SESSION['notify'] = [
       "message" => $message,
@@ -160,7 +160,7 @@ class Core {
     }
     $path = _Resources_Language."/$path.php";
     if (!file_exists($path)) {
-      return []
+      return [];
     }
     return require_once($path);
   }

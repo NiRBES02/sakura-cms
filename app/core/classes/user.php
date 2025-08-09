@@ -58,9 +58,9 @@ class user {
     $hash = $cookie[1];
 
     $prepared_select = $this->db->prepare("
-        SELECT *
-        FROM users
-        WHERE id = :id
+    SELECT *
+    FROM users
+    WHERE id = :id
     ");
 
     if ($prepared_select === false) {
@@ -105,7 +105,7 @@ class user {
     $this->about = $this->db->HSC($arg['about']);
     $this->avatar = $arg["avatar"];
     $this->banner = $arg["banner"];
-    
+
     $this->avatarUrl = $this->avatarUrl($this->id, $this->avatar);
     $this->bannerUrl = $this->bannerUrl($this->id, $this->banner);
 
@@ -116,20 +116,33 @@ class user {
     $this->checkSession($cookie[1]);
   }
 
-  private function loadAuth() {
-    $authType = Root . "/core/libs/auth/usual.php";
+
+  /**
+  * Загружает класс аутентификаци.
+  *
+  * @return Auth.
+  */
+  private function loadAuth(): Auth {
+    $authType = Root."/core/libs/auth/usual.php";
     if (!file_exists($authType)) {
       exit('Auth Type Error!');
     }
     require_once($authType);
-    return new auth($this->core);
+    return new Auth($this->core);
   }
 
-  private function checkSession($cookie = "") {
+
+  /**
+  * Проверяет активную сессию.
+  *
+  * @param string $cookie Куки пользователя.
+  * @return bool
+  */
+  private function checkSession(string $cookie = ""): bool {
     $prepared_select = $this->db->prepare("
-        SELECT *
-        FROM sessions
-        WHERE hash = :hash
+    SELECT *
+    FROM sessions
+    WHERE hash = :hash
     ");
     if ($prepared_select === false) {
       return $this->core->notify($this->core->lang["error"]["sql"], "error");
@@ -140,7 +153,6 @@ class user {
     if ($executed_select === false) {
       return $this->core->notify($this->core->lang["error"]["sql"], "error");
     }
-
     // $session_arg = $this->db->fetch_assoc($query);
     // if ($session_arg["hash"] != $cookie[1]) {
     //     $this->setUnauth();
@@ -155,19 +167,21 @@ class user {
     return true;
   }
 
+
   public function setUnauth() {
     if (isset($_COOKIE['ds_user'])) {
-      setcookie("ds_user", "", time() - 3600, '/');
+      setcookie('ds_user', '', time() - 3600, '/');
     }
     return true;
   }
 
+
   public function checkAuth() {
     if (!$this->isAuth) {
       if ($this->core->requestMethod()) {
-        return $this->core->notify($this->core->lang["auth"]["login"]["exist"], 3);
+        return $this->core->notify($this->core->lang['auth']['login']['exist'], 'danger');
       } else {
-        return $this->core->notify($this->core->lang["auth"]["login"]["exist"], 3, "/");
+        return $this->core->notify($this->core->lang['auth']['login']['exist'], 'danger', "/");
       }
     }
   }
@@ -198,13 +212,13 @@ class user {
       return true;
     }
     $stmt = $this->db->prepare("
-            SELECT 1
-            FROM user_roles ur
-            JOIN role_permissions rp ON ur.role_id = rp.role_id
-            JOIN permissions p ON rp.permission_id = p.id
-            WHERE ur.user_id = ? AND p.name = ?
-            LIMIT 1
-        ");
+    SELECT 1
+    FROM user_roles ur
+    JOIN role_permissions rp ON ur.role_id = rp.role_id
+    JOIN permissions p ON rp.permission_id = p.id
+    WHERE ur.user_id = ? AND p.name = ?
+    LIMIT 1
+    ");
     $stmt->execute([$uid, $permission]);
     return (bool)$stmt->fetch();
   }
@@ -220,9 +234,9 @@ class user {
   // About
   public function setAbout(int $uid, string $txt): bool {
     $stmt = $this->db->prepare("
-        UPDATE users
-        SET about = :about
-        WHERE id = :id
+    UPDATE users
+    SET about = :about
+    WHERE id = :id
     ");
     $stmt->execute([
       "id" => $uid,
@@ -230,20 +244,20 @@ class user {
     ]);
     return true; // TODO
   }
-  
+
   // --- Раздел ПЕРСОНАЛИЗАЦИИ
   public function avatarUrl(int $uid, ?string $avatar): string {
     $pathNoAvatar = "/Public/Assets/Img/no-image.png";
     $pathAvatar = "/Public/Uploads/{$uid}/{$avatar}";
-    if(!$avatar) {
+    if (!$avatar) {
       return $pathNoAvatar;
     }
-    if(!file_exists(_Root."/".$pathAvatar)) {
+    if (!file_exists(_Root."/".$pathAvatar)) {
       return $pathNoAvatar;
     }
     return $pathAvatar;
   }
-  
+
   public function bannerUrl(int $uid, ?string $banner): ?string {
     $url = "/cdn/{$uid}/{$banner}";
     return $url;

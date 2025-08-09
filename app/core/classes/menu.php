@@ -15,8 +15,12 @@ class menu {
     $this->loadMenuItems();
   }
 
-  private function loadMenuItems(): void
-  {
+  /**
+  * Загружает меню
+  *
+  * @return void
+  */
+  private function loadMenuItems(): void {
     // Проверяем, существует ли директория с модулями
     if (!is_dir(_App_Modules)) {
       return;
@@ -26,23 +30,23 @@ class menu {
     $moduleDirs = array_filter(glob(_App_Modules.'/*'), 'is_dir');
 
     foreach ($moduleDirs as $moduleDir) {
-      $configPath = $moduleDir . '/config.php';
+      // Изменили путь: теперь ищем menu.php в папке data
+      $menuPath = $moduleDir . '/data/menu.php';
 
-      // Проверяем, существует ли файл конфигурации
-      if (file_exists($configPath)) {
+      // Проверяем, существует ли файл меню
+      if (file_exists($menuPath)) {
         // Подключаем и получаем массив из файла
-        $config = require $configPath;
+        $menuItems = require $menuPath;
 
-        // Проверяем, есть ли в конфиге ключ 'menu_items'
-        if (isset($config['menu_items'])) {
+        // Проверяем, есть ли в массиве ключ 'left'
+        if (isset($menuItems['left'])) {
           // Если есть левое меню, добавляем его
-          if (isset($config['menu_items']['left'])) {
-            $this->leftMenu = array_merge($this->leftMenu, $config['menu_items']['left']);
-          }
+          $this->leftMenu = array_merge($this->leftMenu, $menuItems['left']);
+        }
+        // Проверяем, есть ли в массиве ключ 'right'
+        if (isset($menuItems['right'])) {
           // Если есть правое меню, добавляем его
-          if (isset($config['menu_items']['right'])) {
-            $this->rightMenu = array_merge($this->rightMenu, $config['menu_items']['right']);
-          }
+          $this->rightMenu = array_merge($this->rightMenu, $menuItems['right']);
         }
       }
     }
@@ -51,6 +55,8 @@ class menu {
     $this->sortMenuItems($this->leftMenu);
     $this->sortMenuItems($this->rightMenu);
   }
+
+
   private function sortMenuItems(array &$menu): void
   {
     usort($menu, function($a, $b) {
@@ -71,14 +77,15 @@ class menu {
 
 
   public function load() {
-    $path = _Resources_Views . "/Partials";
-    return $this->core->view("{$path}/Menu.phtml", [
-      "left" => $this->core->view("{$path}/Menu_Test2.phtml", [
+    $path = _Resources_Views . "/partials";
+    return $this->core->view("{$path}/menu.phtml", [
+      "left" => $this->core->view("{$path}/menu_Test2.phtml", [
         "menu" => $this->getLeftMenu()
       ]),
-      "right" => $this->core->view("{$path}/Menu_Test.phtml", [
+      "right" => $this->core->view("{$path}/menu_Test.phtml", [
         "menu" => $this->getRightMenu()
       ])
     ]);
   }
+
 }
