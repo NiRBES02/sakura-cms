@@ -26,7 +26,7 @@
 /public/assets/js 
 /public/uploads/*
 !/public/uploads/.gitkeep
-!/publir/assets/js/ds-bundle.js
+!/public/assets/js/ds-bundle.js
 
 # -- Resourses
 /resources/*
