@@ -202,8 +202,7 @@ class Core {
   * @param string $input Строка с аргументами.
   * @return array Массив с флагами ('flags'), значениями ('values') и неизвестными аргументами ('unknown').
   */
-  public function parseArgsFromString(string $input): array
-  {
+  public function parseArgsFromString(string $input): array {
     $parsed = array(
       "flags" => [],
       "values" => [],

@@ -22,8 +22,6 @@ class user {
   public $time_last = "0";
   public $ip_create;
   public $ip_last;
-  public $firstname;
-  public $lastname;
   public $session = null;
   public $avatarUrl;
   public $bannerUrl;
@@ -100,8 +98,6 @@ class user {
     $this->salt = $arg['salt'];
     $this->tmp = $tmp;
     $this->ip_create = $this->db->HSC($arg['ip_create']);
-    $this->firstname = $this->db->HSC($arg['firstname']);
-    $this->lastname = $this->db->HSC($arg['lastname']);
     $this->about = $this->db->HSC($arg['about']);
     $this->avatar = $arg["avatar"];
     $this->banner = $arg["banner"];
@@ -247,8 +243,8 @@ class user {
 
   // --- Раздел ПЕРСОНАЛИЗАЦИИ
   public function avatarUrl(int $uid, ?string $avatar): string {
-    $pathNoAvatar = "/Public/Assets/Img/no-image.png";
-    $pathAvatar = "/Public/Uploads/{$uid}/{$avatar}";
+    $pathNoAvatar = "/public/assets/img/no-image.png";
+    $pathAvatar = "/public/uploads/{$uid}/{$avatar}";
     if (!$avatar) {
       return $pathNoAvatar;
     }

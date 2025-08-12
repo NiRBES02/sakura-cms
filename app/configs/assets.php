@@ -1,11 +1,11 @@
 <?php
 
-if (!defined("devsakura")) {
-  exit("Попытка взлома!");
+if (!defined('devsakura')) {
+  exit('Попытка взлома!');
 }
 
-$publicCss = "/public/assets/css";
-$publicJs = "/public/assets/js";
+$publicCss = '/public/assets/css';
+$publicJs = '/public/assets/js';
 
 $css = [
   "{$publicCss}/bootstrap.css",
@@ -18,11 +18,11 @@ $js = [
   "{$publicJs}/bootstrap.bundle.js",
   "{$publicJs}/nprogress.js",
   "{$publicJs}/uaparser.min.js",
-  "{$publicJs}/ds.js",
+  //"{$publicJs}/ds.js",
   "{$publicJs}/ds-bundle.js"
 ];
 
 return [
-  "css" => $css,
-  "js" => $js
+  'css' => $css,
+  'js' => $js
 ];
